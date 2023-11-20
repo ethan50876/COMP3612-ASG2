@@ -85,3 +85,28 @@ if (!storedSongs) {
    Some possibilities: if using Visual Code, use Live Server extension; if Brackets,
    use built-in Live Preview.
 */
+
+function showCredits() {
+  var popup = document.querySelector("#credits .popup");
+
+  if (!popup.classList.contains("show")) {
+    //https://www.w3schools.com/howto/howto_js_popup.asp
+    popup.classList.toggle("show")
+    setTimeout(() => popup.classList.toggle("show"), 5000);
+  }
+}
+
+function togglePage(pageName) {
+  var currPage = document.querySelector("section#" + pageName);
+  var otherPages = document.querySelectorAll("section:not(#" + pageName + ")");
+
+  if (!currPage.classList.contains("show")) {
+    
+    for(page of otherPages) {
+      if(page.classList.contains("show")) {
+        page.classList.remove("show");
+      }
+    }
+    currPage.classList.add("show");
+  }
+}

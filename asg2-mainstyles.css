@@ -4,14 +4,26 @@ html {
     padding: 5px;
 }
 
-
-ul {
+.topbar > * {
+    display: inline;
     list-style: none;
 }
-h1 {
-    display: inline;
+
+#credits ul {
+    background-color: gray;
 }
 
-.topbar li {
-    display: inline;
+section {
+    display: none;
 }
+
+.popup {
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+

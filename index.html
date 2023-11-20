@@ -11,10 +11,16 @@
         <nav>
             <ul class="topbar">
                 <h1>Logo</h1>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#search">Search/Browse Songs</a></li>
-                <li><a href="#playlist">Playlist</a></li>
-                <li><a href="#credits"> Credits</a></li>
+                <li><button onclick="togglePage('home-view')">Home</button></li>
+                <li><button onclick="togglePage('search-view')">Search/Browse Songs</button></li>
+                <li><button onclick="togglePage('playlist-view')">Playlist</button></li>
+                <li id="credits"><button onmouseover="showCredits()"> Credits</button>
+                    <ul class="popup">
+                        <li>Ethan Ai</li>
+                        <li>Kushal Saini</li>
+                        <li><a href="https://github.com/ethan50876/COMP3612-ASG2">GitHub</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
