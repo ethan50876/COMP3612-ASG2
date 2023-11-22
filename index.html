@@ -46,7 +46,37 @@
 
     <!-- Search/Browse Songs View -->
     <section id="search-view">
-        <h2>Search/Browse Songs</h2>
+        <div class="search-engine">
+            <h2>Search/Browse Songs</h2>
+            <input type="radio" id="title-radio" name="search-field" checked>
+            <label for="title">Title:</label>
+            <input type="text" id="title" placeholder="Type here">
+            
+            <label for="title-radio" onclick="updateRadioButtons('title')"></label>
+            
+            <input type="radio" id="artist-radio" name="search-field">
+            <label for="artist">Artist:</label>
+            <select id="artist">
+              <option value="" selected>Pick one</option>
+            </select>
+            <label for="artist-radio" onclick="updateRadioButtons('artist')"></label>
+            
+            <input type="radio" id="genre-radio" name="search-field">
+            <label for="genre">Genre:</label>
+            <select id="genre">
+              <option value="" selected>Pick one</option>
+            </select>
+            <label for="genre-radio" onclick="updateRadioButtons('genre')"></label>
+            
+            <button onclick="search()">Search</button>
+            <button onclick="resetSearch()">Reset</button>
+            
+
+        </div>
+        <div class="song-list">
+            <ul id="results-list"></ul>
+        </div>
+        
         <!-- Include functionality for displaying and sorting songs -->
         <!-- Display song information, add to playlist button, and filter options -->
     </section>
@@ -69,7 +99,7 @@
     <footer>
         <!-- Your footer content goes here -->
     </footer>
-
+    <div id="snackbar" class="snackbar"></div>
     
 </body>
 </html>
