@@ -78,25 +78,25 @@
         <div class="song-list">
             <div class="list-container" id="title-container">
               <h3>Title</h3>
-              <button onclick="sortList('title')">Sort</button>
+              <button class="sort-button" data-field="title" onclick="sortList('title')">Sort</button>
               <ul id="results-list"></ul>
             </div>
           
-            <div class="list-container" id="author-container">
-              <h3>Author</h3>
-              <button onclick="sortList('author')">Sort</button>
-              <ul id="author-list"></ul>
+            <div class="list-container" id="artist-container">
+              <h3>Artist</h3>
+              <button class="sort-button" data-field="artist" onclick="sortList('artist')">Sort</button>
+              <ul id="artist-list"></ul>
             </div>
           
             <div class="list-container" id="genre-container">
               <h3>Genre</h3>
-              <button onclick="sortList('genre')">Sort</button>
+              <button class="sort-button" data-field="genre" onclick="sortList('genre')">Sort</button>
               <ul id="genre-list"></ul>
             </div>
           
             <div class="list-container" id="year-container">
               <h3>Year</h3>
-              <button onclick="sortList('year')">Sort</button>
+              <button class="sort-button" data-field="year" onclick="sortList('year')">Sort</button>
               <ul id="year-list"></ul>
             </div>
         </div>
