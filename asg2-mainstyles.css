@@ -27,3 +27,11 @@ section {
     display: block;
 }
 
+.song-list {
+    display: flex;
+}
+
+.song-list ul {
+    list-style: none;
+}
+

@@ -44,30 +44,67 @@ function togglePage(pageName) {
 let currentSortField = 'title'; // Initial sort field
 let filters = { title: true, artist: false, genre: false };
 
+// Function to filter songs based on user input
+function filterSongs(parsedSongData, titleInput, artistInput, genreInput, filters) {
+  return parsedSongData.filter(song => {
+    const titleMatch = filters.title && song.title.toLowerCase().includes(titleInput);
+    const artistMatch = filters.artist && song.artist.name.toLowerCase() === artistInput;
+    const genreMatch = filters.genre && song.genre.name.toLowerCase() === genreInput;
+
+    return titleMatch || artistMatch || genreMatch;
+  });
+}
+
+// Function to sort songs based on the current sort field
+function sortSongs(filteredSongs, currentSortField) {
+  return filteredSongs.sort((a, b) => a[currentSortField].localeCompare(b[currentSortField]));
+}
+
+// Function to update the search results in the UI
+function updateSearchResults(filteredSongs) {
+  const resultsList = document.getElementById('results-list');
+  resultsList.innerHTML = filteredSongs.map(song => `<li>${formatSongTitle(song.title)}</li>`).join('');
+}
+
+// Function to update additional lists (author, genre, year) in the UI
+function updateAdditionalLists(filteredSongs) {
+  const authorList = document.getElementById('author-list');
+  const genreList = document.getElementById('genre-list');
+  const yearList = document.getElementById('year-list');
+
+  // Clear previous results
+  authorList.innerHTML = '';
+  genreList.innerHTML = '';
+  yearList.innerHTML = '';
+
+  // Iterate over filteredSongs and append details to respective lists
+  filteredSongs.forEach(song => {
+    authorList.innerHTML += `<li>${song.artist.name}</li>`;
+    genreList.innerHTML += `<li>${song.genre.name}</li>`;
+    yearList.innerHTML += `<li>${song.year}</li>`;
+  });
+}
+
+// Main search function
 function search() {
   const titleInput = document.getElementById('title').value.toLowerCase();
   const artistInput = document.getElementById('artist').value.toLowerCase();
   const genreInput = document.getElementById('genre').value.toLowerCase();
 
-  const titleChecked = document.getElementById('title-radio').checked;
-  const artistChecked = document.getElementById('artist-radio').checked;
-  const genreChecked = document.getElementById('genre-radio').checked;
+  const filters = {
+    title: document.getElementById('title-radio').checked,
+    artist: document.getElementById('artist-radio').checked,
+    genre: document.getElementById('genre-radio').checked,
+  };
 
-  const filteredSongs = parsedSongData.filter(song => {
-    const titleMatch = titleChecked && song.title.toLowerCase().includes(titleInput);
-    const artistMatch = artistChecked && (artistInput === '' || song.artist.name.toLowerCase() === artistInput);
-    const genreMatch = genreChecked && (genreInput === '' || song.genre.name.toLowerCase() === genreInput);
+  const filteredSongs = filterSongs(parsedSongData, titleInput, artistInput, genreInput, filters);
+  const sortedSongs = sortSongs(filteredSongs, currentSortField);
 
-    return titleMatch || artistMatch || genreMatch;
-  });
-
-  // Sort the filtered songs based on the currentSortField
-  filteredSongs.sort((a, b) => a[currentSortField].localeCompare(b[currentSortField]));
-
-  // Update the "results-list" with the filtered and sorted songs
-  const searchResults = filteredSongs.map(song => `<li>${formatSongTitle(song.title)}</li>`);
-  document.getElementById('results-list').innerHTML = searchResults.join('');
+  // Update the UI
+  updateSearchResults(sortedSongs);
+  updateAdditionalLists(sortedSongs);
 }
+
 
 
 // Function to update radio buttons and disable other fields
@@ -157,10 +194,11 @@ function updateSortIndicator(field) {
 
 function clearFilters() {
   filters = { title: true, artist: false, genre: false };
-  // Clear and disable any filter-related UI elements
-  // ...
+  // Set the radio button for "title" as default
+  document.getElementById('title-radio').checked = true;
 
-  search(); // Re-run the search to remove filters
+  // Re-run the search to remove filters
+  search(); 
 }
 
 function resetSearch() {
@@ -287,7 +325,10 @@ let parsedSongData;
 
 })();
 
-
+document.addEventListener('DOMContentLoaded', function () {
+  // Call the resetSearch function when the DOM is fully loaded
+  resetSearch();
+});
 document.getElementById('title').addEventListener('input', search);
 document.getElementById('artist').addEventListener('change', search);
 document.getElementById('genre').addEventListener('change', search);
