@@ -290,10 +290,10 @@ function updateRadioButtons(field) {
 
 function formatSongTitle(title) {
   if (title.length > 25) {
-    const truncatedTitle = `${title.substring(0, 25)}…`;
+    const shortTitle = `${title.substring(0, 25)}…`;
     const fullTitle = title;
 
-    return `<span class="tooltip" onclick="showFullTitle('${fullTitle}')">${truncatedTitle}</span>`;
+    return `<span class="tooltip" onclick="showFullTitle('${fullTitle}')">${shortTitle}</span>`;
   }
   return title;
 }
