@@ -164,6 +164,7 @@ let currentSortField = 'title'; // Initial sort field
 let filters = { title: true, artist: false, genre: false };
 let ascending = false;
 let filteredSongs = [];
+let playlist = [];
 
 // Function to filter songs based on user input
 function filterSongs(parsedSongData, titleInput, artistInput, genreInput, filters) {
@@ -194,17 +195,29 @@ function sortSongs() {
 // Function to update the search results in the UI
 function updateSearchResults(sortedSongs) {
   const resultsList = document.getElementById('results-list');
+  const playlistButtonsContainer = document.getElementById('playlist-buttons');
+  const yearList = document.getElementById('year-list');
 
-  // Clear previous results
+  // Clear previous results and buttons
   resultsList.innerHTML = '';
+  playlistButtonsContainer.innerHTML = '';
+  yearList.innerHTML = '';
 
-  // Accumulate list items in a string
-  const listItems = sortedSongs.map(song => `<li>${formatSongTitle(song.title)}</li>`).join('');
+  // Iterate over sortedSongs and append details to respective containers
+  sortedSongs.forEach(song => {
+    // Append song details to the results list
+    resultsList.innerHTML += `<li>${formatSongTitle(song.title)}</li>`;
 
-  // Set the innerHTML once after the loop
-  resultsList.innerHTML = listItems;
+    // Append song details to the year list
+    yearList.innerHTML += `<li>${song.year}</li>`;
+
+    // Create "Add to Playlist" button for each song and append to the buttons container
+    const addToPlaylistButton = document.createElement('button');
+    addToPlaylistButton.textContent = '+';
+    addToPlaylistButton.onclick = () => addToPlaylist(song);
+    playlistButtonsContainer.appendChild(addToPlaylistButton);
+  });
 }
-
 // Function to update additional lists (artist, genre, year) in the UI
 function updateAdditionalList(filteredSongs) {
   const artistList = document.getElementById('artist-list');
@@ -238,20 +251,27 @@ function search() {
 
   filteredSongs = filterSongs(parsedSongData, titleInput, artistInput, genreInput, filters);
   const sortedSongs = sortSongs(filteredSongs, currentSortField);
-
-  console.log('Filtered Songs:', filteredSongs);
-  console.log('Sorted Songs:', sortedSongs);
-
-  // Update the UI for the main list (title)
+  // Update the UI 
   updateSearchResults(filteredSongs); 
-
-  // Update additional lists (artist, genre, year)
   updateAdditionalList(filteredSongs, song => song.artist.name, 'artist');
   updateAdditionalList(filteredSongs, song => song.genre.name, 'genre');
   updateAdditionalList(filteredSongs, song => song.year, 'year');
 
   // Update the sortedSongsMap with the current sort field
   sortedSongsMap[currentSortField] = sortedSongs;
+
+  // Add a button for each displayed song
+  const playlistButtonsContainer = document.getElementById('playlist-buttons');
+  playlistButtonsContainer.innerHTML = ''; // Clear previous buttons
+  
+  const resultsList = document.getElementById('results-list');
+  resultsList.childNodes.forEach((result, index) => {
+    const song = filteredSongs[index];
+    const addToPlaylistButton = document.createElement('button');
+    addToPlaylistButton.textContent = '+';
+    addToPlaylistButton.onclick = () => addToPlaylist(song);
+    playlistButtonsContainer.appendChild(addToPlaylistButton);
+  });
 }
 
 // Function to update radio buttons and disable other fields
@@ -268,41 +288,25 @@ function updateRadioButtons(field) {
 }
 
 
-
-// Format the filtered searched songs to a max of 25 chars
 function formatSongTitle(title) {
   if (title.length > 25) {
-    return `${title.substring(0, 25)}&hellip;`;
+    const truncatedTitle = `${title.substring(0, 25)}…`;
+    const fullTitle = title;
+
+    return `<span class="tooltip" onclick="showFullTitle('${fullTitle}')">${truncatedTitle}</span>`;
   }
   return title;
 }
 
-// Unused ATM
 function showFullTitle(title) {
-  // Display full title in a popup (tooltip) for 5 seconds
-  const snackbar = document.getElementById('snackbar');
-  snackbar.innerHTML = title;
-  snackbar.style.display = 'block';
+  const tooltip = document.getElementById('tooltip');
+  tooltip.textContent = title;
+  tooltip.style.display = 'block';
+
   setTimeout(() => {
-    snackbar.style.display = 'none';
+    tooltip.style.display = 'none';
   }, 5000);
 }
-
-
-//Unused ATM
-function addToPlaylist(title) {
-  // Logic to add the song to the playlist
-  // ...
-
-  // Display a snackbar (toast) to inform the user
-  const snackbar = document.getElementById('snackbar');
-  snackbar.innerHTML = `Added "${title}" to the playlist!`;
-  snackbar.style.display = 'block';
-  setTimeout(() => {
-    snackbar.style.display = 'none';
-  }, 3000);
-}
-
 
 // Helper function to get the value of a specific field for a song
 function getFieldValue(song, field) {
@@ -373,28 +377,60 @@ function updateAllSortedLists() {
   updateSortedList('artist');
   updateSortedList('genre');
   updateSortedList('year');
+
+  updatePlaylistButtons(sortedSongsMap[currentSortField]);
 }
 
 
 
 function resetSearch() {
   document.getElementById('title').value = '';
-  document.getElementById('artist').value = ''; // Set the default value
-  document.getElementById('genre').value = ''; // Set the default value
+  document.getElementById('artist').value = '';
+  document.getElementById('genre').value = '';
 
-  // Reset radio buttons
   document.getElementById('title-radio').checked = true;
   document.getElementById('artist-radio').checked = false;
   document.getElementById('genre-radio').checked = false;
 
-  filteredSongs = [];
+  // Reset other variables or state as needed
 
+  filteredSongs = [];
   // Reset sorting direction to ascending and sort titles alphabetically
   ascending = false;
   currentSortField = 'title'; // Set the default sorting field
   sortList('title');
+}
 
 
+function addToPlaylist(song) {
+    playlist.push(song);
+    showSnackbar();
+    console.log('Current Playlist:', playlist);
+}
+
+function showSnackbar() {
+  const snackbar = document.getElementById('snackbar');
+  snackbar.style.display = 'block';
+
+  // Hide the snackbar after 3 seconds (adjust the duration as needed)
+  setTimeout(() => {
+    snackbar.style.display = 'none';
+  }, 3000);
+}
+
+function updatePlaylistButtons(sortedSongs) {
+  const playlistButtonsContainer = document.getElementById('playlist-buttons');
+  playlistButtonsContainer.innerHTML = '';
+
+  if (sortedSongs) {
+    // Iterate over sortedSongs and append "Add to Playlist" button for each song
+    sortedSongs.forEach(song => {
+      const addToPlaylistButton = document.createElement('button');
+      addToPlaylistButton.textContent = '+';
+      addToPlaylistButton.onclick = () => addToPlaylist(song);
+      playlistButtonsContainer.appendChild(addToPlaylistButton);
+    });
+  }
 }
 
 // end of search/browse functions
@@ -409,10 +445,8 @@ function resetSearch() {
 
 document.addEventListener('DOMContentLoaded', function () {
   // Call the resetSearch function when the DOM is fully loaded
-  resetSearch();
+  search();
 });
 document.getElementById('title').addEventListener('input', search);
 document.getElementById('artist').addEventListener('change', search);
 document.getElementById('genre').addEventListener('change', search);
-
-search();
