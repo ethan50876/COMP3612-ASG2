@@ -9,17 +9,15 @@ const api = 'http://www.randyconnolly.com/funwebdev/3rd/api/music/songs-nested.p
 
 // Genre JSON parsing into JS object
 let parsedGenreData;
-(async () => {
-  const jsonGenre = 'genres.json';
 
-  try {
-    const response = await fetch(jsonGenre);
-
+fetch('genres.json')
+  .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-
-    const data = await response.json();
+    return response.json();
+  })
+  .then(data => {
     // Convert to string
     const jsonGenreString = JSON.stringify(data);
     
@@ -35,30 +33,29 @@ let parsedGenreData;
     // Populating Genre Dropdown
     const genreDropdown = document.getElementById('genre');
     parsedGenreData.forEach(genre => {
-    const option = document.createElement('option');
-    option.value = genre.name;
-    option.text = genre.name;
-    genreDropdown.add(option);
-});
-  } catch (error) {
+      const option = document.createElement('option');
+      option.value = genre.name;
+      option.text = genre.name;
+      genreDropdown.add(option);
+    });
+  })
+  .catch(error => {
     // Handle errors
     console.error('Error:', error);
-  }
-})();
+  });
+
 
 // Artist JSON parsing into JS object
 let parsedArtistData;
-(async () => {
-  const jsonArtist = 'artists.json';
 
-  try {
-    const response = await fetch(jsonArtist);
-
+fetch('artists.json')
+  .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-
-    const data = await response.json();
+    return response.json();
+  })
+  .then(data => {
     // Convert to string
     const jsonArtistString = JSON.stringify(data);
     
@@ -71,48 +68,46 @@ let parsedArtistData;
     // Output the parsed JS object to the console
     console.log('Parsed Artist Data:', parsedArtistData);
 
-
     // Populating Artist Dropdown
     const artistDropdown = document.getElementById('artist');
     parsedArtistData.forEach(artist => {
-    const option = document.createElement('option');
-    option.value = artist.name;
-    option.text = artist.name;
-    artistDropdown.add(option);
-});
-  } catch (error) {
+      const option = document.createElement('option');
+      option.value = artist.name;
+      option.text = artist.name;
+      artistDropdown.add(option);
+    });
+  })
+  .catch(error => {
     // Handle errors
     console.error('Error:', error);
-  }
-})();
+  });
+
 
 
 // Song API fetching/parsing to JS object
 let parsedSongData;
-(async () => {
-  const storedSongs = localStorage.getItem('songs.json');
-  
-  if (!storedSongs) {
-    try {
-      const response = await fetch(api);
+const storedSongs = localStorage.getItem('songs.json');
 
+if (!storedSongs) {
+  fetch(api)
+    .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
-      const data = await response.json();
+      return response.json();
+    })
+    .then(data => {
       localStorage.setItem('songs.json', JSON.stringify(data));
       parsedSongData = data;
       console.log('Parsed Song Data:', parsedSongData);
-    } catch (error) {
+    })
+    .catch(error => {
       console.error('Error fetching data:', error);
-    }
-  } else {
-    parsedSongData = JSON.parse(storedSongs);
-    console.log('Parsed Song Data:', parsedSongData);
-  }
-
-})();
+    });
+} else {
+  parsedSongData = JSON.parse(storedSongs);
+  console.log('Parsed Song Data:', parsedSongData);
+}
 
 // Populate the initial list of songs
 const sortedSongsMap = {
@@ -183,8 +178,9 @@ function sortSongs() {
     const valueA = getFieldValue(a, currentSortField);
     const valueB = getFieldValue(b, currentSortField);
 
+    // No sorting for undefined values
     if (valueA === undefined || valueB === undefined) {
-      return 0; // No sorting for undefined values
+      return 0; 
     }
 
     return String(valueA).localeCompare(String(valueB));
@@ -205,20 +201,21 @@ function updateSearchResults(sortedSongs) {
 
   // Iterate over sortedSongs and append details to respective containers
   sortedSongs.forEach(song => {
-    // Append song details to the results list
-    resultsList.innerHTML += `<li>${formatSongTitle(song.title)}</li>`;
-
-    // Append song details to the year list
-    yearList.innerHTML += `<li>${song.year}</li>`;
-
-    // Create "Add to Playlist" button for each song and append to the buttons container
-    const addToPlaylistButton = document.createElement('button');
-    addToPlaylistButton.textContent = '+';
-    addToPlaylistButton.onclick = () => addToPlaylist(song);
-    playlistButtonsContainer.appendChild(addToPlaylistButton);
+    // container for each song's details
+    const listItemContainer = document.createElement('div');
+    
+    // results list container
+    listItemContainer.innerHTML += `<li>${formatSongTitle(song.title)}</li>`;
+    
+    // event listener to open single song view
+    listItemContainer.addEventListener('click', () => openSingleSongView(song));
+    
+    // append the container to the main results list
+    resultsList.appendChild(listItemContainer);
   });
 }
-// Function to update additional lists (artist, genre, year) in the UI
+
+// Function to update the lists (artist, genre, year) in the UI
 function updateAdditionalList(filteredSongs) {
   const artistList = document.getElementById('artist-list');
   const genreList = document.getElementById('genre-list');
@@ -290,10 +287,10 @@ function updateRadioButtons(field) {
 
 function formatSongTitle(title) {
   if (title.length > 25) {
-    const shortTitle = `${title.substring(0, 25)}…`;
+    const shortTitle = `${title.substring(0, 25)}&hellip;`;
     const fullTitle = title;
 
-    return `<span class="tooltip" onclick="showFullTitle('${fullTitle}')">${shortTitle}</span>`;
+    return `<span title="${fullTitle}">${shortTitle}</span>`;
   }
   return title;
 }
@@ -348,8 +345,8 @@ function sortList(field) {
 
   // Update the sort direction
   ascending = isAscending;
-
-  updateAllSortedLists(); // Update all sorted lists
+  // Re-update all sorted lists
+  updateAllSortedLists(); 
 }
 
 // Function to update the sorted list in the UI
@@ -397,7 +394,8 @@ function resetSearch() {
   filteredSongs = [];
   // Reset sorting direction to ascending and sort titles alphabetically
   ascending = false;
-  currentSortField = 'title'; // Set the default sorting field
+  // Set the default sorting field
+  currentSortField = 'title'; 
   sortList('title');
 }
 
@@ -412,7 +410,7 @@ function showSnackbar() {
   const snackbar = document.getElementById('snackbar');
   snackbar.style.display = 'block';
 
-  // Hide the snackbar after 3 seconds (adjust the duration as needed)
+  // Hide the snackbar after 3 seconds
   setTimeout(() => {
     snackbar.style.display = 'none';
   }, 3000);
@@ -423,7 +421,7 @@ function updatePlaylistButtons(sortedSongs) {
   playlistButtonsContainer.innerHTML = '';
 
   if (sortedSongs) {
-    // Iterate over sortedSongs and append "Add to Playlist" button for each song
+    // Iterate over sortedSongs and append "+" button for each song
     sortedSongs.forEach(song => {
       const addToPlaylistButton = document.createElement('button');
       addToPlaylistButton.textContent = '+';
@@ -435,6 +433,118 @@ function updatePlaylistButtons(sortedSongs) {
 
 // end of search/browse functions
 
+// start of single song view functions
+
+let singleSongViewOpen = false;
+let radarChartCreated;
+
+
+function openSingleSongView(song) {
+  // Check if the single song view is not already open
+  if (!singleSongViewOpen) {
+    // Hide the search/browse view
+    const searchBrowseView = document.getElementById('search-view');
+    searchBrowseView.style.display = 'none';
+
+    // Show the single song view
+    const singleSongView = document.getElementById('single-song-view');
+    singleSongView.style.display = 'block';
+
+    // Update the view state
+    singleSongViewOpen = true;
+
+    const formattedDuration = formatDuration(song.details.duration);
+
+    // Update the single song view content with the song details
+    const songDetailsElement = document.getElementById('song-details');
+    songDetailsElement.innerHTML = `
+      <p>Song Name: ${song.title}</p>
+      <p>Artist: ${song.artist.name}</p>
+      <p>Genre: ${song.genre.name}</p>
+      <p>Year: ${song.year}</p>
+      <p>Duration: ${formattedDuration}</p>
+      <br>
+      <p><strong>Analytics Data:</strong></p>
+      <p>BPM: ${song.details.bpm}</p>
+      <p>Energy: ${song.analytics.energy}</p>
+      <p>Danceability: ${song.analytics.danceability}</p>
+      <p>Liveness: ${song.analytics.liveness}</p>
+      <p>Valence: ${song.analytics.valence}</p>
+      <p>Acousticness: ${song.analytics.acousticness}</p>
+      <p>Speechiness: ${song.analytics.speechiness}</p>
+      <p>Popularity: ${song.details.popularity}</p>
+
+
+    `;
+  
+    console.log('Open Single Song View for:', song);
+    createRadarChart(song);
+  }
+}
+
+function closeSingleSongView() {
+  // Check if the single song view is open
+  if (singleSongViewOpen) {
+    // Hide the single song view
+    const singleSongView = document.getElementById('single-song-view');
+    singleSongView.style.display = 'none';
+
+    // Show the search/browse view
+    const searchBrowseView = document.getElementById('search-view');
+    searchBrowseView.style.display = 'block';
+
+    // Update the view state
+    singleSongViewOpen = false;
+  }
+}
+
+function formatDuration(durationInSeconds) {
+  const minutes = Math.floor(durationInSeconds / 60);
+  const seconds = durationInSeconds % 60;
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+function createRadarChart(song) {
+  if (radarChartCreated) {
+    radarChartCreated.destroy();
+  }
+  const radarData = {
+    labels: ['Energy', 'Danceability', 'Valence', 'Liveness', 'Acousticness', 'Speechiness'],
+    datasets: [
+      {
+        label: 'Song Properties',
+        data: [
+          song.analytics.energy,
+          song.analytics.danceability,
+          song.analytics.valence,
+          song.analytics.liveness,
+          song.analytics.acousticness,
+          song.analytics.speechiness,
+        ],
+      }
+    ]
+  };
+
+  const radarOptions = {
+    scale: {
+      ticks: {
+        beginAtZero: true,
+        max: 100
+      }
+    }
+  };
+
+  const radarChartCanvas = document.getElementById('radar-chart');
+  radarChartCreated = new Chart(radarChartCanvas, {
+    type: 'radar',
+    data: radarData,
+    options: radarOptions
+  });
+}
+
+
+// end of single song view functions
+
 
 
 
@@ -444,9 +554,10 @@ function updatePlaylistButtons(sortedSongs) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Call the resetSearch function when the DOM is fully loaded
+  // Call the search function when the DOM is fully loaded
   search();
+  document.getElementById('title').addEventListener('input', search);
+  document.getElementById('artist').addEventListener('change', search);
+  document.getElementById('genre').addEventListener('change', search);
+
 });
-document.getElementById('title').addEventListener('input', search);
-document.getElementById('artist').addEventListener('change', search);
-document.getElementById('genre').addEventListener('change', search);

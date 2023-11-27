@@ -3,6 +3,8 @@
 <head>
     <link href= "asg2-mainstyles.css"  rel="stylesheet">
     <script src="assign2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 
@@ -107,10 +109,15 @@
     <div id="tooltip" class="tooltip-container"></div>
 
     <!-- Single Song View -->
-    <section id="single-song-view">
+    <section id="single-song-view" style="display: none;">
         <h2>Song Details</h2>
-        <!-- Display detailed information about a single song -->
-        <!-- Display radar chart for Spotify music analysis metrics -->
+        <!-- Song Details Div -->
+        <div id="song-details"></div>
+        <!-- Radar Chart Div -->
+        <div id="radar-chart-container">
+          <canvas id="radar-chart"></canvas>
+        </div>
+        <button onclick="closeSingleSongView()">Close</button>
     </section>
 
     <!-- Playlist View -->
