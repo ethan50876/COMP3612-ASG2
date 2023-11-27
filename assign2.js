@@ -443,8 +443,9 @@ function openSingleSongView(song) {
   // Check if the single song view is not already open
   if (!singleSongViewOpen) {
     // Hide the search/browse view
-    const searchBrowseView = document.getElementById('search-view');
-    searchBrowseView.style.display = 'none';
+    //const searchBrowseView = document.getElementById('search-view');
+    //searchBrowseView.style.display = 'none';
+    togglePage("single-song-view")
 
     // Show the single song view
     const singleSongView = document.getElementById('single-song-view');
@@ -486,12 +487,14 @@ function closeSingleSongView() {
   // Check if the single song view is open
   if (singleSongViewOpen) {
     // Hide the single song view
-    const singleSongView = document.getElementById('single-song-view');
-    singleSongView.style.display = 'none';
+    //const singleSongView = document.getElementById('single-song-view');
+    //singleSongView.style.display = 'none';
 
     // Show the search/browse view
-    const searchBrowseView = document.getElementById('search-view');
-    searchBrowseView.style.display = 'block';
+    //const searchBrowseView = document.getElementById('search-view');
+    //searchBrowseView.style.display = 'block';
+
+    togglePage("search-view");
 
     // Update the view state
     singleSongViewOpen = false;
@@ -545,13 +548,108 @@ function createRadarChart(song) {
 
 // end of single song view functions
 
+// home view functions
 
+function initializeHome() {
+  
+  initializeTopSongs();
+  initializeTopGenres();
+  initializeTopArtists();
 
+}
 
+function initializeTopSongs() {
+  const topSongs = parsedSongData.sort((a, b) => b.details.popularity - a.details.popularity).slice(0, 15);
 
+  const topSongsList = document.querySelector('#top-songs-list');
+  topSongs.forEach(song => {
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.textContent = song.title;
+    listItem.appendChild(link);
+    topSongsList.appendChild(listItem);
 
+    link.addEventListener('click', () => openSingleSongView(song));
+  });
+}
 
+function initializeTopGenres() {
 
+  const genreCounts = {}; // Number of occurrences of each genre
+
+  parsedSongData.forEach(song => {
+    if (!genreCounts[song.genre.name]) {
+      genreCounts[song.genre.name] = 1;
+    } else {
+      genreCounts[song.genre.name]++;
+    }
+  });
+
+  // Convert the genre counts object into an array of objects
+  let topGenres = Object.entries(genreCounts).map(([genre, count]) => ({ genre, count }));
+
+  // Sort the top genres by count
+  topGenres.sort((a, b) => b.count - a.count);
+
+  // Limit to top 15 genres
+  topGenres = topGenres.slice(0, 15);
+
+  const topGenresList = document.querySelector('#top-genres-list');
+  topGenres.forEach(genreObj => {
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.textContent = `${genreObj.genre} (${genreObj.count})`;
+    listItem.appendChild(link);
+    topGenresList.appendChild(listItem);
+
+    link.addEventListener('click', function() {
+      selectFilter("genre", genreObj.genre);
+    });
+  });
+}
+
+function initializeTopArtists() {
+  const artistCounts = {}; // Number of occurrences of each artist
+
+  parsedSongData.forEach(song => {
+    if (!artistCounts[song.artist.name]) {
+      artistCounts[song.artist.name] = 1;
+    } else {
+      artistCounts[song.artist.name]++;
+    }
+  });
+
+  // Convert the artist counts object into an array of objects
+  let topArtists = Object.entries(artistCounts).map(([artist, count]) => ({ artist, count }));
+
+  // Sort the top artists by count
+  topArtists.sort((a, b) => b.count - a.count);
+
+  // Limit to top 15 artists
+  topArtists = topArtists.slice(0, 15);
+
+  const topArtistsList = document.querySelector('#top-artists-list');
+  topArtists.forEach(artistObj => {
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.textContent = `${artistObj.artist} (${artistObj.count})`;
+    listItem.appendChild(link);
+    topArtistsList.appendChild(listItem);
+
+    link.addEventListener('click', function() {
+      selectFilter("artist", artistObj.artist);
+    });
+  });
+}
+
+function selectFilter(filter, value) {
+  document.querySelector(`#${filter}`).value = value;
+  document.querySelector(`#${filter}-radio`).checked = true;
+  updateRadioButtons(`${filter}`);
+  search();
+
+  togglePage("search-view");
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   // Call the search function when the DOM is fully loaded
@@ -559,5 +657,6 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('title').addEventListener('input', search);
   document.getElementById('artist').addEventListener('change', search);
   document.getElementById('genre').addEventListener('change', search);
+  initializeHome();
 
 });
