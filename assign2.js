@@ -354,11 +354,11 @@ function updateSortedList(field) {
   const listContainer = document.getElementById(`${field}-container`);
   const list = listContainer.querySelector('ul');
 
-  // Extract the field data and format it
+  // Format title if needed
   const sortedListItems = sortedSongsMap[currentSortField].map(song => {
     let fieldValue = getFieldValue(song, field);
 
-    // Format text if it exceeds 25 characters
+    // exceeds 25 characters
     fieldValue = formatSongTitle(fieldValue);
 
     return `<li>${fieldValue}</li>`;
@@ -366,6 +366,14 @@ function updateSortedList(field) {
 
   // Update the list
   list.innerHTML = sortedListItems.join('');
+
+  // Add event listeners to each <li> element in the title list only
+  if (field === 'title') {
+    list.querySelectorAll('li').forEach((li, index) => {
+      // Add an event listener to open the single song view for the corresponding song
+      li.addEventListener('click', () => openSingleSongView(sortedSongsMap[currentSortField][index]));
+    });
+  }
 }
 
 // Function to update all sorted lists
@@ -397,6 +405,7 @@ function resetSearch() {
   // Set the default sorting field
   currentSortField = 'title'; 
   sortList('title');
+
 }
 
 
@@ -660,3 +669,4 @@ document.addEventListener('DOMContentLoaded', function () {
   initializeHome();
 
 });
+
