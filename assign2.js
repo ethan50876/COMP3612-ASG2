@@ -408,13 +408,6 @@ function resetSearch() {
 
 }
 
-
-function addToPlaylist(song) {
-    playlist.push(song);
-    showSnackbar();
-    console.log('Current Playlist:', playlist);
-}
-
 function showSnackbar() {
   const snackbar = document.getElementById('snackbar');
   snackbar.style.display = 'block';
@@ -660,6 +653,91 @@ function selectFilter(filter, value) {
   togglePage("search-view");
 }
 
+// playlist view functions
+
+function addToPlaylist(song) {
+  if (!playlist.includes(song)) {
+    playlist.push(song);
+    calculatePlaylistInfo();
+
+  const tableBody = document.querySelector("#playlist-table tbody");
+  const row = document.createElement('tr');
+  row.id = `playlist-${song.id}`;
+
+  const removeButton = document.createElement('button');
+  removeButton.textContent = "remove";
+  removeButton.addEventListener('click', function() {
+    removeFromPlaylist(song);
+  });
+
+  const title = document.createElement('div')
+  title.textContent = song.title;
+  title.addEventListener('click', function () {
+    openSingleSongView(song);
+  });
+
+  createCell(title);
+  createCell(song.artist.name);
+  createCell(song.genre.name);
+  createCell(song.year);
+  createCell(song.details.popularity);
+  createCell(removeButton);
+
+  function createCell(cellContent) {
+    const cell = document.createElement('td');
+    if (cellContent instanceof HTMLElement) {
+      cell.appendChild(cellContent);
+    } else {
+      cell.textContent = cellContent;
+    }
+    row.appendChild(cell);
+  }
+
+  tableBody.appendChild(row);
+
+  showSnackbar();
+  console.log('Current Playlist:', playlist);
+  }
+}
+
+function removeFromPlaylist(song) {
+  document.querySelector(`#playlist-${song.id}`).remove();
+  playlist = playlist.filter(songItem => songItem !== song);
+  calculatePlaylistInfo();
+}
+
+function clearPlaylist() {
+  playlist.forEach(song => {
+    removeFromPlaylist(song);
+  })
+}
+
+function calculatePlaylistInfo() {
+  
+  const playlistLen = playlist.length;
+
+  let avgPopularity = 0;
+  if(playlistLen != 0) {
+    playlist.forEach(song => {
+      avgPopularity += song.details.popularity;
+    })
+    avgPopularity /= playlistLen;
+    avgPopularity = avgPopularity.toFixed(2);
+  }
+
+  const listLen = document.querySelector("#playlist-len");
+  listLen.textContent = `${playlistLen} songs`;
+  const listAvg = document.querySelector('#playlist-ranking');
+  listAvg.textContent = `Popularity Ranking: ${avgPopularity}`;
+
+  info = document.querySelector("#playlist-info");
+  info.appendChild(listLen);
+  info.appendChild(listAvg);
+
+}
+
+// end of playlist view functions
+
 document.addEventListener('DOMContentLoaded', function () {
   // Call the search function when the DOM is fully loaded
   search();
@@ -667,6 +745,6 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('artist').addEventListener('change', search);
   document.getElementById('genre').addEventListener('change', search);
   initializeHome();
-
+  calculatePlaylistInfo();
 });
 
