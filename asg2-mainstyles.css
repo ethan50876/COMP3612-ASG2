@@ -12,6 +12,7 @@ nav {
 .topbar > * {
     display: inline;
     list-style: none;
+    margin: 10px;
 }
 
 #credits .popup{

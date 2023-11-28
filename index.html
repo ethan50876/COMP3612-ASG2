@@ -12,25 +12,24 @@
   <!-- Header Section -->
   <header>
     <nav class="navbar is-primary">
-      <div class="navbar-brand">
+      <div class="navbar-brand is-expanded">
         <h1 class="title is-1">Songify</h1>
       </div>
-      <ul class="topbar navbar-menu is-active">
-        <li><button class='button' onclick="togglePage('home-view')">Home</button></li>
-        <li><button class='button' onclick="togglePage('search-view')">Search/Browse Songs</button></li>
-        <li><button class='button' onclick="togglePage('playlist-view')">Playlist</button></li>
-        <li id="credits"><button class='button dropdown-trigger' onmouseover="showCredits()"> Credits</button>
-          <ul class="popup dropdown-content">
-            <li>
-              <div class="dropdown-item">Ethan Ai</div>
-            </li>
-            <li>
-              <div class="dropdown-item">Kushal Saini</div>
-            </li>
-            <li><a href="https://github.com/ethan50876/COMP3612-ASG2" class="dropdown-item">GitHub</a></li>
-          </ul>
-        </li>
-      </ul>
+      <div class="navbar-start topbar">
+        <button class='navbar-item button' onclick="togglePage('home-view')">Home</button>
+        <button class='navbar-item button' onclick="togglePage('search-view')">Search/Browse Songs</button>
+        <button class='navbar-item button' onclick="togglePage('playlist-view')">Playlist</button>
+        <button class='button dropdown-trigger' onmouseover="showCredits()"> Credits</button>
+        <ul class="popup dropdown-content">
+          <li>
+            <div class="dropdown-item">Ethan Ai</div>
+          </li>
+          <li>
+            <div class="dropdown-item">Kushal Saini</div>
+          </li>
+          <li><a href="https://github.com/ethan50876/COMP3612-ASG2" class="dropdown-item">GitHub</a></li>
+        </ul>
+      </div>
     </nav>
   </header>
 
@@ -123,7 +122,9 @@
   <!-- Single Song View -->
   <section id="single-song-view">
     <div class="columns">
-      <div class="column"><h2 class="title is-3"></h2></div>
+      <div class="column">
+        <h2 class="title is-3"></h2>
+      </div>
       <div class="column"><button class="button" onclick="closeSingleSongView()">Close</button></div>
     </div>
     <!-- Song Details Div -->
