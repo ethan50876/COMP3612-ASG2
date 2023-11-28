@@ -19,10 +19,6 @@ nav h1 {
     margin: 10px;
 }
 
-#credits .popup{
-    margin-left: 350px;
-}
-
 section {
     display: none !important;
 }
@@ -35,6 +31,32 @@ section {
 
 .show {
     display: block !important;
+}
+
+button:hover {
+    background-color: turquoise;
+}
+
+.search-engine > *{
+    display: inline;
+}
+
+#search-view-top {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#search-body {
+    padding: 15px;
+}
+
+#search-body h3 {
+    display: inline;
+}
+
+#title {
+    width: 200px;
+    height: 35px;
 }
 
 .song-list {
@@ -53,12 +75,26 @@ ul.li {
     display: flex;
     flex-direction: column; 
     align-items: flex-start; 
-    margin-top: 96px;
+    margin-top: 27px;
+    
 }
 #playlist-buttons button {
     margin-left: 20px;
-    margin-top: 2px;
-    font-size: 9px;
+    margin-top: 6.01px;
+    font-size: 10px;
+    border: solid gray 1px;
+    width: 30px;
+}
+
+#search-body li:nth-child(even), 
+#results-list *:nth-child(even),
+#playlist-buttons button:nth-child(even){
+    background-color: lightgrey;
+}
+
+#playlist-buttons button:hover {
+    cursor: pointer;
+    background-color: turquoise;
 }
 
 #home-view li{
@@ -70,13 +106,20 @@ ul.li {
     text-decoration: underline;
 }
 
-#playlist-table td:first-child:hover, #home-view li:hover {
-    color: turquoise;
+#playlist-table td:first-child:hover, 
+#home-view li:hover,
+#results-list li:hover {
+    color: teal;
     cursor: pointer;
 }
 
 #single-song-view span button, #single-song-view span h2{
     display: inline;
+}
+
+#radar-chart-container {
+    width: 600px;
+    height: 600px;
 }
 
 #snackbar {

@@ -126,7 +126,7 @@ const sortedSongsMap = {
 */
 
 function showCredits() {
-  var popup = document.querySelector("#credits .popup");
+  let popup = document.querySelector("#credits .popup");
 
   if (!popup.classList.contains("show")) {
     //https://www.w3schools.com/howto/howto_js_popup.asp
@@ -136,8 +136,8 @@ function showCredits() {
 }
 
 function togglePage(pageName) {
-  var currPage = document.querySelector("section#" + pageName);
-  var otherPages = document.querySelectorAll("section:not(#" + pageName + ")");
+  let currPage = document.querySelector("section#" + pageName);
+  let otherPages = document.querySelectorAll("section:not(#" + pageName + ")");
 
   if (!currPage.classList.contains("show")) {
     
@@ -423,6 +423,7 @@ function updatePlaylistButtons(sortedSongs) {
     // Iterate over sortedSongs and append "+" button for each song
     sortedSongs.forEach(song => {
       const addToPlaylistButton = document.createElement('button');
+      addToPlaylistButton.classList.add("button","is-small");
       addToPlaylistButton.textContent = '+';
       addToPlaylistButton.onclick = () => addToPlaylist(song);
       playlistButtonsContainer.appendChild(addToPlaylistButton);
@@ -644,7 +645,7 @@ function initializeTopArtists() {
 function selectFilter(filter, value) {
   document.querySelector(`#${filter}`).value = value;
   document.querySelector(`#${filter}-radio`).checked = true;
-  resetSearch();
+  search();
   togglePage("search-view");
 }
 
