@@ -423,7 +423,6 @@ function updatePlaylistButtons(sortedSongs) {
     // Iterate over sortedSongs and append "+" button for each song
     sortedSongs.forEach(song => {
       const addToPlaylistButton = document.createElement('button');
-      addToPlaylistButton.classList.add("button","is-small");
       addToPlaylistButton.textContent = '+';
       addToPlaylistButton.onclick = () => addToPlaylist(song);
       playlistButtonsContainer.appendChild(addToPlaylistButton);
