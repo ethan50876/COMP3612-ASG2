@@ -130,7 +130,14 @@ ul.li {
     text-align: center;
     padding: 15px;
     z-index: 1;
-  }
+}
+
+
+
+.song-list {
+    overflow-y: scroll;
+    max-height: 600px;
+}
 
 
 .tooltip-container {
