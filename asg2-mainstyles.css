@@ -9,6 +9,10 @@ nav {
     margin-bottom: 20px;
 }
 
+nav h1 {
+    padding-left: 5px;
+}
+
 .topbar > * {
     display: inline;
     list-style: none;
