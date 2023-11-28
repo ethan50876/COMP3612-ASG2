@@ -1,161 +1,172 @@
 <!DOCTYPE html>
 
 <head>
-    <link href= "asg2-mainstyles.css"  rel="stylesheet">
-    <script src="assign2.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="asg2-mainstyles.css" rel="stylesheet">
+  <script src="assign2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
+
 <body>
 
-    <!-- Header Section -->
-    <header>
-        <nav>
-            <ul class="topbar">
-                <h1>Logo</h1>
-                <li><button onclick="togglePage('home-view')">Home</button></li>
-                <li><button onclick="togglePage('search-view')">Search/Browse Songs</button></li>
-                <li><button onclick="togglePage('playlist-view')">Playlist</button></li>
-                <li id="credits"><button onmouseover="showCredits()"> Credits</button>
-                    <ul class="popup">
-                        <li>Ethan Ai</li>
-                        <li>Kushal Saini</li>
-                        <li><a href="https://github.com/ethan50876/COMP3612-ASG2">GitHub</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Home View -->
-    <section id="home-view" class="show">
-        <div id="top-genres">
-            <h2>Top Genres</h2>
-            <!-- Display the top 15 genres with links -->
-            <!-- Example: <a href="#genre1">Genre 1</a> -->
-            <ul id="top-genres-list"></ul>
-        </div>
-        <div id="top-artists">
-            <h2>Top Artists</h2>
-            <!-- Display the top 15 artists with links -->
-            <!-- Example: <a href="#artist1">Artist 1</a> -->
-            <ul id="top-artists-list"></ul>
-        </div>
-        <div id="most-popular-songs">
-            <h2>Most Popular Songs</h2>
-            <!-- Display the top 15 songs with links -->
-            <!-- Example: <a href="#song1">Song 1</a> -->
-            <ul id="top-songs-list"></ul>
-        </div>
-    </section>
-
-    <!-- Search/Browse Songs View -->
-    <section id="search-view">
-        <div class="search-engine">
-          <h2>Search/Browse Songs</h2>
-      
-          <!-- Title Search -->
-          <input type="radio" id="title-radio" name="search-field" checked>
-          <label for="title">Title:</label>
-          <input type="text" id="title" placeholder="Type here">
-          <label for="title-radio" onclick="updateRadioButtons('title')"></label>
-      
-          <!-- Artist Search -->
-          <input type="radio" id="artist-radio" name="search-field">
-          <label for="artist">Artist:</label>
-          <select id="artist">
-            <option value="" selected>Pick one</option>
-          </select>
-          <label for="artist-radio" onclick="updateRadioButtons('artist')"></label>
-      
-          <!-- Genre Search -->
-          <input type="radio" id="genre-radio" name="search-field">
-          <label for="genre">Genre:</label>
-          <select id="genre">
-            <option value="" selected>Pick one</option>
-          </select>
-          <label for="genre-radio" onclick="updateRadioButtons('genre')"></label>
-      
-          <button onclick="search()">Search</button>
-          <button onclick="resetSearch()">Reset</button>
-        </div>
-      
-        <div class="song-list">
-            <div class="list-container" id="title-container">
-              <h3>Title</h3>
-              <button class="sort-button" data-field="title" onclick="sortList('title')">Sort</button>
-              <ul id="results-list"></ul>
-            </div>
-          
-            <div class="list-container" id="artist-container">
-              <h3>Artist</h3>
-              <button class="sort-button" data-field="artist" onclick="sortList('artist')">Sort</button>
-              <ul id="artist-list"></ul>
-            </div>
-          
-            <div class="list-container" id="genre-container">
-              <h3>Genre</h3>
-              <button class="sort-button" data-field="genre" onclick="sortList('genre')">Sort</button>
-              <ul id="genre-list"></ul>
-            </div>
-          
-            <div class="list-container" id="year-container">
-              <h3>Year</h3>
-              <button class="sort-button" data-field="year" onclick="sortList('year')">Sort</button>
-              <ul id="year-list"></ul>
-            </div>
-            <div id="playlist-buttons"></div>
-        </div>
-        
-    </section>
-    <div id="snackbar">Song added to playlist!</div>
-    <div id="tooltip" class="tooltip-container"></div>
-
-    <!-- Single Song View -->
-    <section id="single-song-view">
-        <h2>Song Details</h2>
-        <!-- Song Details Div -->
-        <div id="song-details"></div>
-        <!-- Radar Chart Div -->
-        <div id="radar-chart-container">
-          <canvas id="radar-chart"></canvas>
-        </div>
-        <button onclick="closeSingleSongView()">Close</button>
-    </section>
-
-    <!-- Playlist View -->
-    <section id="playlist-view">
-        <h2>Playlist</h2>
-        <!-- Display playlist contents with options to remove songs and clear the playlist -->
-        <!-- Display summary info about the playlist -->
-
-        <ul id="playlist-info">
-          <li id="playlist-len"></li>
-          <li id="playlist-ranking"></li>
-        </ul>
-          <table id="playlist-table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Artist</th>
-                <th>Genre</th>
-                <th>Year</th>
-                <th>Popularity</th>
-                <th><button onClick="clearPlaylist()">Remove All</button></th>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
+  <!-- Header Section -->
+  <header>
+    <nav class="navbar is-primary">
+      <div class="navbar-brand">
+        <h1 class="title is-1">Songify</h1>
       </div>
-    </section>
+      <ul class="topbar navbar-menu is-active">
+        <li><button class='button' onclick="togglePage('home-view')">Home</button></li>
+        <li><button class='button' onclick="togglePage('search-view')">Search/Browse Songs</button></li>
+        <li><button class='button' onclick="togglePage('playlist-view')">Playlist</button></li>
+        <li id="credits"><button class='button dropdown-trigger' onmouseover="showCredits()"> Credits</button>
+          <ul class="popup dropdown-content">
+            <li>
+              <div class="dropdown-item">Ethan Ai</div>
+            </li>
+            <li>
+              <div class="dropdown-item">Kushal Saini</div>
+            </li>
+            <li><a href="https://github.com/ethan50876/COMP3612-ASG2" class="dropdown-item">GitHub</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- Footer Section -->
-    <footer>
-        <!-- Your footer content goes here -->
-    </footer>
-    <div id="snackbar" class="snackbar"></div>
-    
+  <!-- Home View -->
+  <section id="home-view" class="show">
+    <div class="columns has-background-light has-text-black">
+      <div class="column" id="top-genres">
+        <h2 class="title is-3">Top Genres</h2>
+        <!-- Display the top 15 genres with links -->
+        <!-- Example: <a href="#genre1">Genre 1</a> -->
+        <ul id="top-genres-list"></ul>
+      </div>
+      <div class="column" id="top-artists">
+        <h2 class="title is-3">Top Artists</h2>
+        <!-- Display the top 15 artists with links -->
+        <!-- Example: <a href="#artist1">Artist 1</a> -->
+        <ul id="top-artists-list"></ul>
+      </div>
+      <div class="column" id="most-popular-songs">
+        <h2 class="title is-3">Most Popular Songs</h2>
+        <!-- Display the top 15 songs with links -->
+        <!-- Example: <a href="#song1">Song 1</a> -->
+        <ul id="top-songs-list"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search/Browse Songs View -->
+  <section id="search-view">
+    <div class="search-engine">
+      <h2 class="title is-3">Search/Browse Songs</h2>
+
+      <!-- Title Search -->
+      <input type="radio" id="title-radio" name="search-field" checked>
+      <label for="title">Title:</label>
+      <input type="text" id="title" placeholder="Type here">
+      <label for="title-radio" onclick="updateRadioButtons('title')"></label>
+
+      <!-- Artist Search -->
+      <input type="radio" id="artist-radio" name="search-field">
+      <label for="artist">Artist:</label>
+      <select id="artist">
+        <option value="" selected>Pick one</option>
+      </select>
+      <label for="artist-radio" onclick="updateRadioButtons('artist')"></label>
+
+      <!-- Genre Search -->
+      <input type="radio" id="genre-radio" name="search-field">
+      <label for="genre">Genre:</label>
+      <select id="genre">
+        <option value="" selected>Pick one</option>
+      </select>
+      <label for="genre-radio" onclick="updateRadioButtons('genre')"></label>
+
+      <button onclick="search()">Search</button>
+      <button onclick="resetSearch()">Reset</button>
+    </div>
+
+    <div class="song-list">
+      <div class="list-container" id="title-container">
+        <h3>Title</h3>
+        <button class="sort-button" data-field="title" onclick="sortList('title')">Sort</button>
+        <ul id="results-list"></ul>
+      </div>
+
+      <div class="list-container" id="artist-container">
+        <h3>Artist</h3>
+        <button class="sort-button" data-field="artist" onclick="sortList('artist')">Sort</button>
+        <ul id="artist-list"></ul>
+      </div>
+
+      <div class="list-container" id="genre-container">
+        <h3>Genre</h3>
+        <button class="sort-button" data-field="genre" onclick="sortList('genre')">Sort</button>
+        <ul id="genre-list"></ul>
+      </div>
+
+      <div class="list-container" id="year-container">
+        <h3>Year</h3>
+        <button class="sort-button" data-field="year" onclick="sortList('year')">Sort</button>
+        <ul id="year-list"></ul>
+      </div>
+      <div id="playlist-buttons"></div>
+    </div>
+
+  </section>
+  <div id="snackbar">Song added to playlist!</div>
+  <div id="tooltip" class="tooltip-container"></div>
+
+  <!-- Single Song View -->
+  <section id="single-song-view">
+    <h2 class="title is-3">Song Details</h2>
+    <!-- Song Details Div -->
+    <div id="song-details"></div>
+    <!-- Radar Chart Div -->
+    <div id="radar-chart-container">
+      <canvas id="radar-chart"></canvas>
+    </div>
+    <button onclick="closeSingleSongView()">Close</button>
+  </section>
+
+  <!-- Playlist View -->
+  <section id="playlist-view">
+    <h2 class="title is-3">Playlist</h2>
+    <!-- Display playlist contents with options to remove songs and clear the playlist -->
+    <!-- Display summary info about the playlist -->
+
+    <ul class="list" id="playlist-info">
+      <li id="playlist-len"></li>
+      <li id="playlist-ranking"></li>
+    </ul>
+    <table class="table" id="playlist-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Genre</th>
+          <th>Year</th>
+          <th>Popularity</th>
+          <th><button class="button is-small" onClick="clearPlaylist()">Remove All</button></th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <!-- Your footer content goes here -->
+    <p>Authors: Ethan Ai, Kushal Saini</p>
+  </footer>
+  <div id="snackbar" class="snackbar"></div>
+
 </body>
+
 </html>

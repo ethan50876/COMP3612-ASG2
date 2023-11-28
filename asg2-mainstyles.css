@@ -1,7 +1,12 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+
 html {
-    width: 1280px;
     margin: 0;
     padding: 5px;
+}
+
+nav {
+    margin-bottom: 20px;
 }
 
 .topbar > * {
@@ -9,8 +14,8 @@ html {
     list-style: none;
 }
 
-#credits ul {
-    background-color: gray;
+#credits .popup{
+    margin-left: 350px;
 }
 
 section {
@@ -34,9 +39,11 @@ section {
 .song-list ul {
     list-style: none;
 }
+
 ul.li {
     padding: 10px;
 }
+
 #playlist-buttons {
     display: flex;
     flex-direction: column; 
@@ -47,6 +54,20 @@ ul.li {
     margin-left: 20px;
     margin-top: 2px;
     font-size: 9px;
+}
+
+#home-view li{
+    font-size: large;
+    padding: 5px;
+}
+
+#playlist-table td:first-child{
+    text-decoration: underline;
+}
+
+#playlist-table td:first-child:hover, #home-view li:hover {
+    color: turquoise;
+    cursor: pointer;
 }
 
 #snackbar {

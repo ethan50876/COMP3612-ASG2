@@ -150,10 +150,6 @@ function togglePage(pageName) {
   }
 }
 
-
-
-
-
 // search/browse JS methods
 let currentSortField = 'title'; // Initial sort field
 let filters = { title: true, artist: false, genre: false };
@@ -566,12 +562,10 @@ function initializeTopSongs() {
   const topSongsList = document.querySelector('#top-songs-list');
   topSongs.forEach(song => {
     const listItem = document.createElement('li');
-    const link = document.createElement('a');
-    link.textContent = song.title;
-    listItem.appendChild(link);
+    listItem.textContent = song.title;
     topSongsList.appendChild(listItem);
 
-    link.addEventListener('click', () => openSingleSongView(song));
+    listItem.addEventListener('click', () => openSingleSongView(song));
   });
 }
 
@@ -599,12 +593,10 @@ function initializeTopGenres() {
   const topGenresList = document.querySelector('#top-genres-list');
   topGenres.forEach(genreObj => {
     const listItem = document.createElement('li');
-    const link = document.createElement('a');
-    link.textContent = `${genreObj.genre} (${genreObj.count})`;
-    listItem.appendChild(link);
+    listItem.textContent = `${genreObj.genre} (${genreObj.count})`;
     topGenresList.appendChild(listItem);
 
-    link.addEventListener('click', function() {
+    listItem.addEventListener('click', function() {
       selectFilter("genre", genreObj.genre);
     });
   });
@@ -633,12 +625,10 @@ function initializeTopArtists() {
   const topArtistsList = document.querySelector('#top-artists-list');
   topArtists.forEach(artistObj => {
     const listItem = document.createElement('li');
-    const link = document.createElement('a');
-    link.textContent = `${artistObj.artist} (${artistObj.count})`;
-    listItem.appendChild(link);
+    listItem.textContent = `${artistObj.artist} (${artistObj.count})`;
     topArtistsList.appendChild(listItem);
 
-    link.addEventListener('click', function() {
+    listItem.addEventListener('click', function() {
       selectFilter("artist", artistObj.artist);
     });
   });
@@ -669,6 +659,7 @@ function addToPlaylist(song) {
   removeButton.addEventListener('click', function() {
     removeFromPlaylist(song);
   });
+  removeButton.classList.add("button", "is-small");
 
   const title = document.createElement('div')
   title.textContent = song.title;
