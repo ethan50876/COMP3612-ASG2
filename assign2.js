@@ -147,6 +147,7 @@ function togglePage(pageName) {
       }
     }
     currPage.classList.add("show");
+    singleSongViewOpen = false;
   }
 }
 
@@ -456,22 +457,28 @@ function openSingleSongView(song) {
 
     // Update the single song view content with the song details
     const songDetailsElement = document.getElementById('song-details');
+    document.querySelector("#single-song-view h2").textContent = song.title;
     songDetailsElement.innerHTML = `
-      <p>Song Name: ${song.title}</p>
-      <p>Artist: ${song.artist.name}</p>
-      <p>Genre: ${song.genre.name}</p>
-      <p>Year: ${song.year}</p>
-      <p>Duration: ${formattedDuration}</p>
-      <br>
-      <p><strong>Analytics Data:</strong></p>
-      <p>BPM: ${song.details.bpm}</p>
-      <p>Energy: ${song.analytics.energy}</p>
-      <p>Danceability: ${song.analytics.danceability}</p>
-      <p>Liveness: ${song.analytics.liveness}</p>
-      <p>Valence: ${song.analytics.valence}</p>
-      <p>Acousticness: ${song.analytics.acousticness}</p>
-      <p>Speechiness: ${song.analytics.speechiness}</p>
-      <p>Popularity: ${song.details.popularity}</p>
+      <div class="columns">
+        <div class="column">
+          <p><strong>Song Details:</strong></p>
+          <p>Artist: ${song.artist.name}</p>
+          <p>Genre: ${song.genre.name}</p>
+          <p>Year: ${song.year}</p>
+          <p>Duration: ${formattedDuration}</p>
+        </div>
+        <div class="column">
+          <p><strong>Analytics Data:</strong></p>
+          <p>BPM: ${song.details.bpm}</p>
+          <p>Energy: ${song.analytics.energy}</p>
+          <p>Danceability: ${song.analytics.danceability}</p>
+          <p>Liveness: ${song.analytics.liveness}</p>
+          <p>Valence: ${song.analytics.valence}</p>
+          <p>Acousticness: ${song.analytics.acousticness}</p>
+          <p>Speechiness: ${song.analytics.speechiness}</p>
+          <p>Popularity: ${song.details.popularity}</p>
+        </div>
+      </div>
 
 
     `;
@@ -637,9 +644,7 @@ function initializeTopArtists() {
 function selectFilter(filter, value) {
   document.querySelector(`#${filter}`).value = value;
   document.querySelector(`#${filter}-radio`).checked = true;
-  updateRadioButtons(`${filter}`);
-  search();
-
+  resetSearch();
   togglePage("search-view");
 }
 
@@ -732,9 +737,9 @@ function calculatePlaylistInfo() {
 document.addEventListener('DOMContentLoaded', function () {
   // Call the search function when the DOM is fully loaded
   search();
-  document.getElementById('title').addEventListener('input', search);
-  document.getElementById('artist').addEventListener('change', search);
-  document.getElementById('genre').addEventListener('change', search);
+  //document.getElementById('title').addEventListener('input', search);
+  //document.getElementById('artist').addEventListener('change', search);
+  //document.getElementById('genre').addEventListener('change', search);
   initializeHome();
   calculatePlaylistInfo();
 });

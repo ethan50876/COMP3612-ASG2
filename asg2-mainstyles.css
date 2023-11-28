@@ -70,6 +70,10 @@ ul.li {
     cursor: pointer;
 }
 
+#single-song-view span button, #single-song-view span h2{
+    display: inline;
+}
+
 #snackbar {
     display: none;
     position: fixed;
