@@ -86,7 +86,7 @@ ul.li {
     width: 30px;
 }
 
-#results-list {
+#results-list, #artist-list {
     width: 250px;
 }
 
