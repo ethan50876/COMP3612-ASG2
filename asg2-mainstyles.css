@@ -86,6 +86,10 @@ ul.li {
     width: 30px;
 }
 
+#results-list {
+    width: 250px;
+}
+
 #search-body li:nth-child(even), 
 #results-list *:nth-child(even),
 #playlist-buttons button:nth-child(even){
