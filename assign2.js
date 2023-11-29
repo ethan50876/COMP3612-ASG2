@@ -20,15 +20,9 @@ fetch('genres.json')
   .then(data => {
     // Convert to string
     const jsonGenreString = JSON.stringify(data);
-    
-    // Output the JSON string to the console
-    console.log('Genre JSON String:', jsonGenreString);
 
     // Parse string to JS object
     parsedGenreData = JSON.parse(jsonGenreString);
-
-    // Output the parsed JS object to the console
-    console.log('Parsed Genre Data:', parsedGenreData);
 
     // Populating Genre Dropdown
     const genreDropdown = document.getElementById('genre');
@@ -58,15 +52,9 @@ fetch('artists.json')
   .then(data => {
     // Convert to string
     const jsonArtistString = JSON.stringify(data);
-    
-    // Output the JSON string to the console
-    console.log('Artist JSON String:', jsonArtistString);
 
     // Parse string to JS object
     parsedArtistData = JSON.parse(jsonArtistString);
-
-    // Output the parsed JS object to the console
-    console.log('Parsed Artist Data:', parsedArtistData);
 
     // Populating Artist Dropdown
     const artistDropdown = document.getElementById('artist');
@@ -99,14 +87,12 @@ if (!storedSongs) {
     .then(data => {
       localStorage.setItem('songs.json', JSON.stringify(data));
       parsedSongData = data;
-      console.log('Parsed Song Data:', parsedSongData);
     })
     .catch(error => {
       console.error('Error fetching data:', error);
     });
 } else {
   parsedSongData = JSON.parse(storedSongs);
-  console.log('Parsed Song Data:', parsedSongData);
 }
 
 // Populate the initial list of songs
@@ -487,7 +473,6 @@ function openSingleSongView(song) {
 
     `;
   
-    console.log('Open Single Song View for:', song);
     createRadarChart(song);
   }
 }
@@ -662,6 +647,7 @@ function selectFilter(filter, value) {
 // playlist view functions
 
 function addToPlaylist(song) {
+  // checks if song is already in playlist
   if (!playlist.includes(song)) {
     playlist.push(song);
     calculatePlaylistInfo();
@@ -683,6 +669,7 @@ function addToPlaylist(song) {
     openSingleSongView(song);
   });
 
+  // creates a cell for each column entry
   createCell(title);
   createCell(song.artist.name);
   createCell(song.genre.name);
@@ -703,16 +690,17 @@ function addToPlaylist(song) {
   tableBody.appendChild(row);
 
   showSnackbar();
-  console.log('Current Playlist:', playlist);
   }
 }
 
+// removes song from playlist and updates playlist info
 function removeFromPlaylist(song) {
   document.querySelector(`#playlist-${song.id}`).remove();
   playlist = playlist.filter(songItem => songItem !== song);
   calculatePlaylistInfo();
 }
 
+// removes all songs from playlist
 function clearPlaylist() {
   playlist.forEach(song => {
     removeFromPlaylist(song);
@@ -723,8 +711,8 @@ function calculatePlaylistInfo() {
   
   const playlistLen = playlist.length;
 
-  let avgPopularity = 0;
-  if(playlistLen != 0) {
+  let avgPopularity = 0; // average popularity of songs in playlist
+  if(playlistLen != 0) { // checks if playlist is empty
     playlist.forEach(song => {
       avgPopularity += song.details.popularity;
     })
@@ -745,12 +733,9 @@ function calculatePlaylistInfo() {
 
 // end of playlist view functions
 
+// initialization functions
 document.addEventListener('DOMContentLoaded', function () {
-  // Call the search function when the DOM is fully loaded
   search();
-  //document.getElementById('title').addEventListener('input', search);
-  //document.getElementById('artist').addEventListener('change', search);
-  //document.getElementById('genre').addEventListener('change', search);
   initializeHome();
   calculatePlaylistInfo();
 });
