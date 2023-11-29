@@ -131,9 +131,11 @@ function showCredits() {
   if (!popup.classList.contains("show")) {
     //https://www.w3schools.com/howto/howto_js_popup.asp
     popup.classList.toggle("show")
-    setTimeout(() => popup.classList.toggle("show"), 5000);
+    setTimeout(() => popup.classList.toggle("show"), 4000);
   }
 }
+
+
 
 function togglePage(pageName) {
   let currPage = document.querySelector("section#" + pageName);
@@ -267,20 +269,6 @@ function search() {
     playlistButtonsContainer.appendChild(addToPlaylistButton);
   });
 }
-
-// Function to update radio buttons and disable other fields
-function updateRadioButtons(field) {
-  const titleInput = document.getElementById('title');
-  const artistInput = document.getElementById('artist');
-  const genreInput = document.getElementById('genre');
-
-  // Disable input fields based on the selected radio button
-  titleInput.disabled = field !== 'title';
-  artistInput.disabled = field !== 'artist';
-  genreInput.disabled = field !== 'genre';
-
-}
-
 
 function formatSongTitle(title) {
   if (title.length > 25) {
@@ -442,8 +430,6 @@ function openSingleSongView(song) {
   // Check if the single song view is not already open
   if (!singleSongViewOpen) {
     // Hide the search/browse view
-    //const searchBrowseView = document.getElementById('search-view');
-    //searchBrowseView.style.display = 'none';
     togglePage("single-song-view")
 
     // Show the single song view
@@ -491,13 +477,6 @@ function openSingleSongView(song) {
 function closeSingleSongView() {
   // Check if the single song view is open
   if (singleSongViewOpen) {
-    // Hide the single song view
-    //const singleSongView = document.getElementById('single-song-view');
-    //singleSongView.style.display = 'none';
-
-    // Show the search/browse view
-    //const searchBrowseView = document.getElementById('search-view');
-    //searchBrowseView.style.display = 'block';
 
     togglePage("search-view");
 
@@ -737,9 +716,7 @@ function calculatePlaylistInfo() {
 document.addEventListener('DOMContentLoaded', function () {
   // Call the search function when the DOM is fully loaded
   search();
-  //document.getElementById('title').addEventListener('input', search);
-  //document.getElementById('artist').addEventListener('change', search);
-  //document.getElementById('genre').addEventListener('change', search);
+
   initializeHome();
   calculatePlaylistInfo();
 });
