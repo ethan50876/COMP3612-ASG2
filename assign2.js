@@ -1,4 +1,8 @@
-
+/*
+Authors: Ethan Ai, Kushal Saini
+Course: COMP 3612 - 001
+Assignment 2
+*/
 
 
 /* url of song api --- https versions hopefully a little later this semester */	
