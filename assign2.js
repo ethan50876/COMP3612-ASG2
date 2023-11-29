@@ -125,6 +125,7 @@ const sortedSongsMap = {
    use built-in Live Preview.
 */
 
+// displays credits for 5 seconds when hovered over
 function showCredits() {
   let popup = document.querySelector("#credits .popup");
 
@@ -135,17 +136,20 @@ function showCredits() {
   }
 }
 
+// toggles between page views adding/removing .show class
 function togglePage(pageName) {
   let currPage = document.querySelector("section#" + pageName);
   let otherPages = document.querySelectorAll("section:not(#" + pageName + ")");
 
   if (!currPage.classList.contains("show")) {
     
+    // removes .show from all other views
     for(page of otherPages) {
       if(page.classList.contains("show")) {
         page.classList.remove("show");
       }
     }
+    // adds .show to current view
     currPage.classList.add("show");
     singleSongViewOpen = false;
   }
@@ -491,14 +495,8 @@ function openSingleSongView(song) {
 function closeSingleSongView() {
   // Check if the single song view is open
   if (singleSongViewOpen) {
-    // Hide the single song view
-    //const singleSongView = document.getElementById('single-song-view');
-    //singleSongView.style.display = 'none';
 
-    // Show the search/browse view
-    //const searchBrowseView = document.getElementById('search-view');
-    //searchBrowseView.style.display = 'block';
-
+    // displays search view, hides everything else
     togglePage("search-view");
 
     // Update the view state
@@ -555,6 +553,7 @@ function createRadarChart(song) {
 
 // home view functions
 
+// initializes the three lists
 function initializeHome() {
   
   initializeTopSongs();
@@ -564,14 +563,18 @@ function initializeHome() {
 }
 
 function initializeTopSongs() {
+
+  // list of the top 15 songs
   const topSongs = parsedSongData.sort((a, b) => b.details.popularity - a.details.popularity).slice(0, 15);
 
   const topSongsList = document.querySelector('#top-songs-list');
+  // creates a list element for each song
   topSongs.forEach(song => {
     const listItem = document.createElement('li');
     listItem.textContent = song.title;
     topSongsList.appendChild(listItem);
 
+    // opens single song view when a song is clicked on
     listItem.addEventListener('click', () => openSingleSongView(song));
   });
 }
@@ -581,28 +584,32 @@ function initializeTopGenres() {
   const genreCounts = {}; // Number of occurrences of each genre
 
   parsedSongData.forEach(song => {
+
     if (!genreCounts[song.genre.name]) {
+      // first genre occurance
       genreCounts[song.genre.name] = 1;
     } else {
+      // adds occurance of genre
       genreCounts[song.genre.name]++;
     }
   });
 
-  // Convert the genre counts object into an array of objects
   let topGenres = Object.entries(genreCounts).map(([genre, count]) => ({ genre, count }));
-
-  // Sort the top genres by count
+  // sorts genres by count
   topGenres.sort((a, b) => b.count - a.count);
 
-  // Limit to top 15 genres
+  // takes the top 15 genres
   topGenres = topGenres.slice(0, 15);
 
+  // ul element
   const topGenresList = document.querySelector('#top-genres-list');
+  // creates list element for each genre
   topGenres.forEach(genreObj => {
     const listItem = document.createElement('li');
     listItem.textContent = `${genreObj.genre} (${genreObj.count})`;
     topGenresList.appendChild(listItem);
 
+    // applies genre filter
     listItem.addEventListener('click', function() {
       selectFilter("genre", genreObj.genre);
     });
@@ -614,33 +621,37 @@ function initializeTopArtists() {
 
   parsedSongData.forEach(song => {
     if (!artistCounts[song.artist.name]) {
+      // first occurance of artist
       artistCounts[song.artist.name] = 1;
     } else {
+      // adds artist occurance
       artistCounts[song.artist.name]++;
     }
   });
 
-  // Convert the artist counts object into an array of objects
   let topArtists = Object.entries(artistCounts).map(([artist, count]) => ({ artist, count }));
-
   // Sort the top artists by count
   topArtists.sort((a, b) => b.count - a.count);
 
-  // Limit to top 15 artists
+  // takes the top 15 artists from list
   topArtists = topArtists.slice(0, 15);
 
+  // ul element
   const topArtistsList = document.querySelector('#top-artists-list');
+  // creates li element for each artist
   topArtists.forEach(artistObj => {
     const listItem = document.createElement('li');
     listItem.textContent = `${artistObj.artist} (${artistObj.count})`;
     topArtistsList.appendChild(listItem);
 
+    // applies artist filter
     listItem.addEventListener('click', function() {
       selectFilter("artist", artistObj.artist);
     });
   });
 }
 
+// switches to search view and applies filter
 function selectFilter(filter, value) {
   document.querySelector(`#${filter}`).value = value;
   document.querySelector(`#${filter}-radio`).checked = true;
