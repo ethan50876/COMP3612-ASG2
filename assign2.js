@@ -272,19 +272,6 @@ function search() {
   });
 }
 
-// Function to update radio buttons and disable other fields
-function updateRadioButtons(field) {
-  const titleInput = document.getElementById('title');
-  const artistInput = document.getElementById('artist');
-  const genreInput = document.getElementById('genre');
-
-  // Disable input fields based on the selected radio button
-  titleInput.disabled = field !== 'title';
-  artistInput.disabled = field !== 'artist';
-  genreInput.disabled = field !== 'genre';
-
-}
-
 
 function formatSongTitle(title) {
   if (title.length > 25) {
@@ -445,9 +432,7 @@ let radarChartCreated;
 function openSingleSongView(song) {
   // Check if the single song view is not already open
   if (!singleSongViewOpen) {
-    // Hide the search/browse view
-    //const searchBrowseView = document.getElementById('search-view');
-    //searchBrowseView.style.display = 'none';
+
     togglePage("single-song-view")
 
     // Show the single song view
@@ -748,9 +733,7 @@ function calculatePlaylistInfo() {
 document.addEventListener('DOMContentLoaded', function () {
   // Call the search function when the DOM is fully loaded
   search();
-  //document.getElementById('title').addEventListener('input', search);
-  //document.getElementById('artist').addEventListener('change', search);
-  //document.getElementById('genre').addEventListener('change', search);
+
   initializeHome();
   calculatePlaylistInfo();
 });
