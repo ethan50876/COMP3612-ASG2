@@ -164,3 +164,6 @@ ul.li {
     visibility: visible;
 }
 
+.footer {
+    background-color: hsl(171, 100%, 41%);
+}
