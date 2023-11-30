@@ -728,5 +728,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   initializeHome();
   calculatePlaylistInfo();
+  togglePage('home-view');
 });
 
