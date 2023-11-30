@@ -135,11 +135,14 @@ ul.li {
 #snackbar {
     display: none;
     position: fixed;
-    bottom: 0;
-    left: 50%;
+    top: 80px;
+    left: 18%;
     text-align: center;
-    padding: 15px;
+    padding: 10px;
     z-index: 1;
+    font-size: 20px;
+    border: 1px solid grey;
+    background-color: aquamarine;
 }
 
 
